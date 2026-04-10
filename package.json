@@ -1,0 +1,49 @@
+{
+  "name": "devshop-report-studio",
+  "version": "2.0.0",
+  "description": "DevShop Report Studio - Desktop App",
+  "author": "Infocenter DevShop",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "build": "electron-builder --win portable --x64"
+  },
+  "build": {
+    "appId": "com.infocenter.devshop-studio",
+    "productName": "DevShop Report Studio",
+    "forceCodeSigning": false,
+    "win": {
+      "target": [
+        {
+          "target": "portable",
+          "arch": [
+            "x64"
+          ]
+        }
+      ],
+      "icon": "assets/icon.ico",
+      "signAndEditExecutable": false,
+      "signingHashAlgorithms": null
+    },
+    "portable": {
+      "artifactName": "DevShop_Report_Studio.exe"
+    },
+    "directories": {
+      "output": "dist"
+    },
+    "files": [
+      "main.js",
+      "src/**/*",
+      "assets/**/*",
+      "node_modules/**/*",
+      "package.json"
+    ]
+  },
+  "devDependencies": {
+    "electron": "^28.3.3",
+    "electron-builder": "^24.13.3"
+  },
+  "dependencies": {
+    "docx": "^9.6.1"
+  }
+}

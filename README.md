@@ -1,49 +1,81 @@
-# DevShop-Status-Report-Generator
-# DevShop Report Studio v2.0
+# DevShop Report Studio v2.0 — Electron Desktop App
 
-A native Windows desktop app for ServiceNow Program Managers.
-Generates polished Status Reports, Call Scripts, and Root Cause 
-Analysis documents from structured JSON — no browser, no server, 
-no installation required for end users.
+## What This Is
+DevShop Report Studio packaged as a native Windows desktop application.
+No browser, no Flask server, no Python required. Just a `.exe` installer.
 
-## How It Works
+---
 
-1. Run your standup and gather raw inputs
-2. Paste materials into your AI tool with the extraction prompt
-3. Drop or paste the JSON output into DevShop Report Studio
-4. Review and edit in the app
-5. Click Generate — Word document saved to Documents/DevShop Studio/output/
+## Folder Structure
 
-## Requirements (Build Machine Only)
+```
+devshop-electron/
+├── main.js              ← Electron main process (replaces Flask + subprocess)
+├── package.json         ← App config + build config
+├── BUILD.bat            ← Run this once to produce the installer
+├── src/
+│   ├── index.html       ← Full redesigned UI
+│   └── preload.js       ← Secure IPC bridge
+└── assets/
+    ├── icon.png         ← App icon (replace with yours)
+    ├── icon.ico         ← Windows taskbar icon (replace with yours)
+    └── ICON_INSTRUCTIONS.txt
+```
 
-- Node.js v16 or higher
-- Windows 10/11 64-bit
+---
 
-End users need only the .exe and Microsoft Word.
+## How to Build (One Time)
 
-## Build
+**Prerequisites:**
+- Node.js v16 or higher — https://nodejs.org
+- Windows 10/11 machine
 
-Double-click BUILD.bat — it installs dependencies and produces:
-dist/DevShop_Report_Studio.exe
+**Steps:**
+1. Copy this entire folder to your machine
+2. Double-click `BUILD.bat`
+3. Wait ~2-3 minutes for npm installs and build
+4. Find the installer at `dist/DevShop Report Studio Setup x.x.x.exe`
+5. Share that `.exe` with your team
 
-## Document Modes
+---
 
-| Mode | Trigger | Output |
-|---|---|---|
-| Status Report | JSON has executive_summary field | Weekly status .docx |
-| Call Script | JSON has topics[] array | Structured call agenda .docx |
-| RCA | JSON has incident field | Root cause analysis .docx |
+## How to Add a Custom Icon (Optional but recommended)
 
-## AI Extraction
+1. Create a 512x512 PNG of your logo/icon
+2. Save as `assets/icon.png`
+3. Convert to `.ico` at https://convertico.com
+4. Save as `assets/icon.ico`
+5. Run BUILD.bat
 
-Use any capable AI tool (Claude, Gemini, ChatGPT) with the prompts in:
-- RCA_AI_PROMPT.md (for RCA mode)
-- Your Gemini Gem or equivalent setup for Status Report and Call Script
+If you skip this, the app will build with the default Electron icon.
 
-## Docs
+---
 
-Full technical reference in /docs.
+## What Changed from v1 (Flask)
 
-## Version
+| v1 Flask                          | v2 Electron                          |
+|-----------------------------------|--------------------------------------|
+| Python + Flask required           | No Python needed                     |
+| Browser tab at localhost:5000     | Native desktop window                |
+| subprocess → Node.js for docx     | Direct in-process docx generation    |
+| Launch_DevShop_Studio.bat         | Installed .exe with desktop shortcut |
+| No custom titlebar                | Custom titlebar with window controls |
 
-v2.0 — April 2026
+---
+
+## How to Update the App
+
+To add features or change the UI:
+1. Edit `src/index.html` (UI changes)
+2. Edit `main.js` (logic/generation changes)
+3. Test locally: `npm start`
+4. When ready to push to team: run `BUILD.bat` again, share new `.exe`
+
+---
+
+## Output Location
+
+Generated reports are saved to:
+`C:\Users\{username}\Documents\DevShop Studio\output\`
+
+The app creates this folder automatically on first run.
